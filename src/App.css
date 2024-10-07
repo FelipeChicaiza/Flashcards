@@ -99,3 +99,11 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.input {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+}

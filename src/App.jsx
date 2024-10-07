@@ -5,33 +5,33 @@ const App = () => {
 
   const flashcards = [
     {
-      question: "What is the difference between a class and an object?",
-      answer: "A class is a blueprint for objects. An object is an instance of a class.",
+      question: "What does JVM stand for?",
+      answer: "Java Virtual Machine",
       difficulty: "easy"
     },
     {
-      question: "What is inheritance in Java?",
-      answer: "Inheritance allows a class to inherit properties and behavior from another class.",
+      question: "whats does Int stand for?",
+      answer: "Integer",
       difficulty: "easy"
     },
     {
-      question: "What is polymorphism?",
-      answer: "Polymorphism allows objects of different classes to be treated as objects of a common superclass.",
+      question: "What does OOP stand for?",
+      answer: "Object Oriented Programming",
       difficulty: "easy"
     },
     {
-      question: "What is encapsulation?",
-      answer: "Encapsulation is the bundling of data and methods that operate on the data into a single unit.",
+      question: "What does Double differ from Int?",
+      answer: "Decimals",
       difficulty: "easy"
     },
     {
-      question: "What is the difference between an interface and an abstract class?",
-      answer: "An interface is a contract that defines the methods that a class must implement. An abstract class can have abstract methods and concrete methods.",
+      question: "What does the scan do?",
+      answer: "Scans for user input",
       difficulty: "easy"
     },
     {
-      question: "What is a constructor?",
-      answer: "A constructor is a special method that is called when an object is created.",
+      question: "What is the simbol for equal?",
+      answer: "==",
       difficulty: "easy"
     },
     {
@@ -40,13 +40,13 @@ const App = () => {
       difficulty: "midium"
     },
     {
-      question: "What is the difference between the equals() method and the == operator?",
-      answer: "The equals() method compares the values of objects and the == operator compares the references of objects.",
-      difficulty: "midium"
+      question: "Whats the name of this symbol: {}",
+      answer: "Curly Brackets",
+      difficulty: "Easy"
     },
     {
       question: "What is the difference between a checked and an unchecked exception?",
-      answer: "A checked exception is checked at compile-time and an unchecked exception is checked at runtime.",
+      answer: "Checked is checked at compile-time and an unchecked exception is checked at runtime.",
       difficulty: "midium"
       
     },
@@ -59,6 +59,15 @@ const App = () => {
 
   const [currentCard, setCurrentCard] = useState(flashcards[0]);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [feedback, setFeedback] = useState('');
+  const [userGuess, setUserGuess] = useState('');
+  // const [correctCount, setCorrectCount] = useState(0);
+  const [currentStreak, setCurrentStreak] = useState(0);
+  const [longestStreak, setLongestStreak] = useState(0);
+
+  const handleInputChange = (e) => {
+    setUserGuess(e.target.value);
+  };
 
   const getRandomCard = () => {
     const randomIndex = Math.floor(Math.random() * flashcards.length);
@@ -66,12 +75,41 @@ const App = () => {
     setShowAnswer(false);
   };
 
+  const handleGuessSubmit = () => {
+    if (userGuess.toLowerCase() === currentCard.answer.toLowerCase()) {
+      setFeedback('Correct!');
+      setCurrentStreak(currentStreak + 1);
+    } else  {
+      setFeedback('Incorrect. Try again!');
+      setCurrentStreak(0);
+      setLongestStreak(currentStreak);
+    }
+  }
+
+  const nextCard = () => {
+    const currentIndex = flashcards.indexOf(currentCard);
+    const nextIndex = (currentIndex + 1) % flashcards.length;
+    setCurrentCard(flashcards[nextIndex]);
+    setShowAnswer(false);
+  };
+
+  const previousCard = () => {
+    const currentIndex = flashcards.indexOf(currentCard);
+    const previousIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+    setCurrentCard(flashcards[previousIndex]);
+    setShowAnswer(false);
+  };
+
+
   return (
     <div className="App">
       <div className='title'>
           <h1>Java Flashcards!</h1>
           <p>Click the card to flip it and see the answer to a random Java flashcard to study basic concepts.</p>
-          <h5>Number of cards: {flashcards.length}</h5>
+          <h3>Number of cards: {flashcards.length}</h3>
+      </div>
+      <div className='streak-counter'>
+        <h4>Current Streak:{currentStreak} Longest Streak: {longestStreak}</h4>
       </div>
 
       <div className={`card-container ${showAnswer ? 'flipped' : ''}`} onClick={() => setShowAnswer(!showAnswer)}>
@@ -84,7 +122,19 @@ const App = () => {
           </div>
         </div>
       </div>
+      <div className='user-input'>
+          Guess the answer here:{'  '}
+          <input className='input' type='text' placeholder='Enter your guess'
+          value={userGuess} onChange={handleInputChange}
+          ></input>
+          <button onClick={handleGuessSubmit}>Submit Guess</button>
+          <h3>{feedback}</h3>
+        </div>
+      <div>
+      <button onClick={nextCard}>⏮️</button>
+      <button onClick={previousCard}>⏭️</button>
       <button onClick={getRandomCard}>Next Flashcard</button>
+      </div>
   </div>
   )
 }

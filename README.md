@@ -17,7 +17,6 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-- [ ] A shuffle button is used to randomize the order of the cards
 - [ x] A user's answer may be counted as correct even when it is slightly different from the target answer
 - [ x] A counter displays the user's current and longest streak of correct responses
 
